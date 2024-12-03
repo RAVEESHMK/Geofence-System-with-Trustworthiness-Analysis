@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geofence and Object Detection</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include custom styles -->
+    <style>
+        body {
+            background-color: #f7f9fc;
+            font-family: 'Arial', sans-serif;
+            margin-top: 50px;
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .geofence-status,
+        .logs {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        .geofence-status h4,
+        .logs h5 {
+            color: #333;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .geofence-status p,
+        .logs ul {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .logs ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .logs ul li {
+            padding: 8px;
+            background-color: #f9f9f9;
+            margin-bottom: 6px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .logs ul li:hover {
+            background-color: #f1f1f1;
+        }
+
+        .video-container {
+            text-align: center;
+        }
+
+        #video {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 3px solid #007bff;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: #999;
+        }
+
+        .footer p {
+            font-size: 16px;
+            color: #007bff;
+        }
+
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .status-badge {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 12px;
+            color: #fff;
+            background-color: #28a745;
+            display: inline-block;
+        }
+
+        .alert-box {
+            background-color: #ffcccc;
+            border: 1px solid #ff4d4d;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #d9534f;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <h1>Geofence and Object Detection Dashboard</h1>
+            <p>Monitor real-time object movements and geofence status</p>
+        </div>
+
+        <!-- Main Content Section -->
+        <div class="row">
+            <!-- Video Feed Section -->
+            <div class="col-md-8">
+                <div class="video-container">
+                    <h3>Live Video Feed</h3>
+                    <!-- Video feed will be served here -->
+                    <img id="video" src="{{ url_for('video_feed') }}" alt="Video Feed">
+                </div>
+            </div>
+
+            <!-- Geofence and Logs Section -->
+            <div class="col-md-4">
+                <div class="geofence-status">
+                    <h4>Geofence Status</h4>
+                    <p id="geofenceStatus" class="status-badge">No objects in geofence</p>
+                </div>
+
+                <div class="logs">
+                    <h5>Movement Logs</h5>
+                    <ul id="movementLogs">
+                        <!-- Logs will be added dynamically here -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 <a href="#">Object Detection and Geofence System</a></p>
+    </div>
+
+    <!-- Include jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Function to update geofence status dynamically
+        function updateGeofenceStatus() {
+            $.getJSON('/geofence_status', function(data) {
+                // Update the geofence status
+                $('#geofenceStatus').text(data.status);
+
+                // Update movement logs
+                $('#movementLogs').empty();
+                data.logs.forEach(function(log) {
+                    $('#movementLogs').append('<li>' + log + '</li>');
+                });
+            });
+        }
+
+        // Periodically fetch and update the geofence status
+        setInterval(updateGeofenceStatus, 2000); // Update every 2 seconds
+    </script>
+</body>
+
+</html>
