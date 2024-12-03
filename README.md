@@ -19,6 +19,18 @@ Backend: Flask, OpenCV, YOLO (Darknet), gTTS
 Frontend: HTML, CSS, JavaScript, Bootstrap
 Other: FFmpeg for audio playback
 
+.
+├── trust_worthy_ai.py                # Flask backend
+├── templates/
+│   └── index.html        # Frontend HTML
+├── yolo-coco/            # YOLO model configuration
+│   ├── coco.names        # Class labels
+│   ├── yolov3.cfg        # YOLO configuration
+│   └── yolov3.weights    # Pre-trained YOLO weights
+├── ffmpeg
+    ├── ffplay
+└── README.md             # Documentation
+
 Installation
 
 Prerequisites:
